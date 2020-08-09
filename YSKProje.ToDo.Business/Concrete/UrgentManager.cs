@@ -4,42 +4,43 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories;
+using YSKProje.ToDo.DataAccess.Interfaces;
 using YSKProje.ToDo.Entities.Concrete;
 
 namespace YSKProje.ToDo.Business.Concrete
 {
     public class UrgentManager : IUrgentService
     {
-        EfUrgentRepository urgentRepository;
+        private readonly IUrgentDal _urgentDal;
 
-        public UrgentManager()
+        public UrgentManager(IUrgentDal urgentDal)
         {
-            urgentRepository = new EfUrgentRepository();
+            _urgentDal = urgentDal;
         }
 
         public void Delete(Urgent entity)
         {
-            urgentRepository.Delete(entity);
+            _urgentDal.Delete(entity);
         }
 
         public List<Urgent> GetAll()
         {
-            return urgentRepository.GetAll();
+            return _urgentDal.GetAll();
         }
 
         public Urgent GetById(int id)
         {
-            return urgentRepository.GetById(id);
+            return _urgentDal.GetById(id);
         }
 
         public void Save(Urgent entity)
         {
-            urgentRepository.Save(entity);
+            _urgentDal.Save(entity);
         }
 
         public void Update(Urgent entity)
         {
-            urgentRepository.Update(entity);
+            _urgentDal.Update(entity);
         }
     }
 }

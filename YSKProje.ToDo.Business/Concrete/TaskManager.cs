@@ -1,42 +1,43 @@
 ﻿using System.Collections.Generic;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories;
+using YSKProje.ToDo.DataAccess.Interfaces;
 using YSKProje.ToDo.Entities.Concrete;
 
 namespace YSKProje.ToDo.Business.Concrete
 {
-    class TaskManager : ITaskService
+   public class TaskManager : ITaskService
     {
-        private readonly EfTaskRepository efCalismaRepository;
+        private readonly ITaskDal _taskDal;
 
-        public TaskManager()
+        public TaskManager(ITaskDal taskDal)
         {
-            efCalismaRepository = new EfTaskRepository();
+            _taskDal = taskDal;
         }
 
         public List<Task> GetAll()
         {
-            return efCalismaRepository.GetAll();
+            return _taskDal.GetAll();
         }
 
         public Task GetById(int id)
         {
-            return efCalismaRepository.GetById(id);
+            return _taskDal.GetById(id);
         }
 
         public void Update(Task entity)
         {
-            efCalismaRepository.Update(entity);
+            _taskDal.Update(entity);
         }
 
         public void Save(Task entity)
         {
-            efCalismaRepository.Save(entity);
+            _taskDal.Save(entity);
         }
 
         public void Delete(Task entity)
         {
-            efCalismaRepository.Delete(entity);
+            _taskDal.Delete(entity);
         }
 
     }

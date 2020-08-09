@@ -1,0 +1,38 @@
+﻿@model List<UrgentListViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@if (Model.Count > 0)
+{
+    <a asp-action="Add" asp-controller="Urgent" class="btn btn-sm btn-info my-2">Aciliyet Ekle</a>
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr>
+                <th>Tanım</th>
+                <th>İşlem</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Definition</td>
+                    <td><a asp-action="Update" asp-controller="Urgent" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Düzenle</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <div class="text-center lead mt-4">
+        <p class="lead"> Sistemde kayıtlı aciliyet durumu bulunamadı.</p>
+        <a asp-action="Add" asp-controller="Urgent" class="btn btn-sm btn-info my-2">Aciliyet Ekle</a>
+    </div>
+}
+

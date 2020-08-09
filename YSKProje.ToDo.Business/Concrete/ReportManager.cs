@@ -3,43 +3,43 @@ using System.Collections.Generic;
 using System.Text;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories;
+using YSKProje.ToDo.DataAccess.Interfaces;
 using YSKProje.ToDo.Entities.Concrete;
 
 namespace YSKProje.ToDo.Business.Concrete
 {
     public class ReportManager : IReportService
-    {
+    {      
+        private readonly IReportDal _reportDal;
 
-        EfReportRepository reportRepository;
-
-        public ReportManager()
+        public ReportManager(IReportDal reportDal)
         {
-            reportRepository = new EfReportRepository();
+            _reportDal = reportDal;
         }
 
         public void Delete(Report entity)
         {
-            reportRepository.Delete(entity);
+            _reportDal.Delete(entity);
         }
 
         public List<Report> GetAll()
         {
-            return reportRepository.GetAll();
+            return _reportDal.GetAll();
         }
 
         public Report GetById(int id)
         {
-            return reportRepository.GetById(id);
+            return _reportDal.GetById(id);
         }
 
         public void Save(Report entity)
         {
-            reportRepository.Save(entity);
+            _reportDal.Save(entity);
         }
 
         public void Update(Report entity)
         {
-            reportRepository.Update(entity);
+            _reportDal.Update(entity);
         }
     }
 }
