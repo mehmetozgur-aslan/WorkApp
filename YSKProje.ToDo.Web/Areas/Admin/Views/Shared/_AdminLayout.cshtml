@@ -1,6 +1,10 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 
+@{
+    string menu = TempData["menu"]?.ToString();
+}
+
 <head>
 
     <meta charset="utf-8">
@@ -26,9 +30,9 @@
         <div class="border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">Admin Layout </div>
             <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action active">Görev İşlemleri</a>
-                <a asp-action="Index" asp-controller="Urgent" asp-area="Admin" class="list-group-item list-group-item-action">Aciliyet İşlemleri</a>
-                <a href="#" class="list-group-item list-group-item-action">Overview</a>
+                <a asp-action="Index" asp-controller="Task" asp-area="Admin" class="list-group-item list-group-item-action @(menu=="task"?"active":"")">Görev İşlemleri</a>
+                <a asp-action="Index" asp-controller="Urgent" asp-area="Admin" class="list-group-item list-group-item-action @(menu=="urgent"?"active":"")">Aciliyet İşlemleri</a>
+                <a class="list-group-item list-group-item-action">Overview</a>
                 <a href="#" class="list-group-item list-group-item-action">Events</a>
                 <a href="#" class="list-group-item list-group-item-action">Profile</a>
                 <a href="#" class="list-group-item list-group-item-action">Status</a>

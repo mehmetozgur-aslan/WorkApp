@@ -21,6 +21,8 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
+            TempData["menu"] = "urgent";
+
             List<Urgent> urgents = _urgentService.GetAll();
 
             List<UrgentListViewModel> urgentListViewModels = new List<UrgentListViewModel>();
@@ -39,6 +41,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
         public IActionResult Add()
         {
+            TempData["menu"] = "urgent";
             return View(new UrgentAddViewModel());
         }
 
@@ -61,6 +64,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
         public IActionResult Update(int id)
         {
+            TempData["menu"] = "urgent";
             Urgent urgent = _urgentService.GetById(id);
 
             if (urgent == null)
@@ -84,7 +88,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
             {
                 Urgent urgent = _urgentService.GetById(model.Id);
 
-                if (urgent==null)
+                if (urgent == null)
                 {
                     return NotFound();
                 }

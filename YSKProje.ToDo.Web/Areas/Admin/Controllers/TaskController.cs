@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class HomeController : Controller
+    public class TaskController : Controller
     {
         public IActionResult Index()
-        {            
+        {
+            TempData["menu"] = "task";
             return View();
         }
     }
