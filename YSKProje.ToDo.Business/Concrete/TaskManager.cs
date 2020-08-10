@@ -40,5 +40,9 @@ namespace YSKProje.ToDo.Business.Concrete
             _taskDal.Delete(entity);
         }
 
+        public List<Task> GetNotCompletedTaskListWithUrgent()
+        {
+            return _taskDal.GetNotCompletedTaskListWithUrgent();
+        }
     }
 }

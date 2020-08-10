@@ -7,5 +7,6 @@ namespace YSKProje.ToDo.Business.Interfaces
 {
     public interface ITaskService : IGenericService<Task>
     {
+        List<Task> GetNotCompletedTaskListWithUrgent();
     }
 }
