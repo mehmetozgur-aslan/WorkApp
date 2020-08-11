@@ -73,5 +73,63 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
             return View(model);
         }
+
+        public IActionResult Update(int id)
+        {
+            TempData["menu"] = "task";
+            Task task = _taskService.GetById(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            TaskUpdateViewModel taskUpdateViewModel = new TaskUpdateViewModel
+            {
+                Id = task.Id,
+                Name = task.Name,
+                Description = task.Description,
+                UrgentId = task.UrgentId
+            };
+
+            ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition", task.UrgentId);
+
+            return View(taskUpdateViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Update(TaskUpdateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _taskService.Update(new Entities.Concrete.Task
+                {
+                    Id = model.Id,
+                    Name = model.Name,
+                    Description = model.Description,
+                    State = false,
+                    UrgentId = model.UrgentId
+                });
+
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition");
+            return View(model);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            Task task = _taskService.GetById(id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            _taskService.Delete(task);
+
+            return Json(null);
+        }
     }
 }
