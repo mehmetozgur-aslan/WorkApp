@@ -84,7 +84,7 @@ namespace YSKProje.ToDo.Web.Controllers
                     var addRoleResult = await _userManager.AddToRoleAsync(appUser, "Member");
                     if (addUserResult.Succeeded)
                     {
-                        return RedirectToAction("Login");
+                        return RedirectToAction("Index");
                     }
                     foreach (var err in addUserResult.Errors)
                     {
