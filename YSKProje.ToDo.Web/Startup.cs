@@ -63,7 +63,8 @@ namespace YSKProje.ToDo.Web
             }
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();//Rol bazlý yetkilendirme
             IdentityInitiazer.SeedData(userManager, roleManager).Wait();
 
             app.UseStaticFiles(); //wwwroot dýþarý açýlýr

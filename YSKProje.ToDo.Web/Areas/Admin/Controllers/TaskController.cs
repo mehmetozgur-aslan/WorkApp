@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using YSKProje.ToDo.Business.Interfaces;
@@ -11,6 +12,7 @@ using Task = YSKProje.ToDo.Entities.Concrete.Task;
 
 namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class TaskController : Controller
     {
