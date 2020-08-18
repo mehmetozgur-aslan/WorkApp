@@ -60,6 +60,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
             var userList = _appUserService.GetUserWithoutAdmin(out totalPage, s, page);
 
             ViewBag.TotalPage = totalPage;
+            ViewBag.Searched = s;
 
             List<AppUserListViewModel> appUserListViewList = new List<AppUserListViewModel>();
 
