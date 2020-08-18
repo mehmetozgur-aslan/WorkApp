@@ -6,7 +6,7 @@ using YSKProje.ToDo.Entities.Concrete;
 
 namespace YSKProje.ToDo.Business.Concrete
 {
-   public class TaskManager : ITaskService
+    public class TaskManager : ITaskService
     {
         private readonly ITaskDal _taskDal;
 
@@ -43,6 +43,16 @@ namespace YSKProje.ToDo.Business.Concrete
         public List<Task> GetNotCompletedTaskListWithUrgent()
         {
             return _taskDal.GetNotCompletedTaskListWithUrgent();
+        }
+
+        public List<Task> GetAllTaskDatas()
+        {
+            return _taskDal.GetAllTaskDatas();
+        }
+
+        public Task GetTaskWithUrgent(int id)
+        {
+            return _taskDal.GetTaskWithUrgent(id);
         }
     }
 }

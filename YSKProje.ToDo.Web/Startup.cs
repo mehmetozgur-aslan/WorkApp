@@ -26,10 +26,13 @@ namespace YSKProje.ToDo.Web
             services.AddScoped<ITaskService, TaskManager>();
             services.AddScoped<IUrgentService, UrgentManager>();
             services.AddScoped<IReportService, ReportManager>();
+            services.AddScoped<IAppUserService, AppUserManager>();
 
             services.AddScoped<ITaskDal, EfTaskRepository>();
             services.AddScoped<IReportDal, EfReportRepository>();
             services.AddScoped<IUrgentDal, EfUrgentRepository>();
+            services.AddScoped<IUserDal, EfUserRepository>();
+            
 
             services.AddDbContext<TodoContext>();
             services.AddIdentity<AppUser, AppRole>(opt =>
