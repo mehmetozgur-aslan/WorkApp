@@ -52,7 +52,7 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
                    user = resultTable.user,
                    userRoles = resultTable.userRole,
                    roles = resultRole
-               }).Where(I => I.roles.Name != "Member").Select(I => new AppUser()
+               }).Where(I => I.roles.Name == "Member").Select(I => new AppUser()
                {
                    Id = I.user.Id,
                    Name = I.user.Name,

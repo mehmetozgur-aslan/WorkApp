@@ -60,7 +60,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
             TempData["menu"] = "work";
             ViewBag.ActivePage = page;
             int totalPage;
-            Entities.Concrete.Task task = _taskService.GetById(id);
+            Entities.Concrete.Task task = _taskService.GetTaskWithUrgent(id);
             var userList = _appUserService.GetUserWithoutAdmin(out totalPage, s, page);
 
             ViewBag.TotalPage = totalPage;
@@ -111,7 +111,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         {
             TempData["menu"] = "work";
             AppUser user = _userManager.Users.FirstOrDefault(x => x.Id == model.AppUserId);
-            YSKProje.ToDo.Entities.Concrete.Task task = _taskService.GetById(model.TaskId);
+            YSKProje.ToDo.Entities.Concrete.Task task = _taskService.GetTaskWithUrgent(model.TaskId);
 
             if (user == null || task == null)
             {

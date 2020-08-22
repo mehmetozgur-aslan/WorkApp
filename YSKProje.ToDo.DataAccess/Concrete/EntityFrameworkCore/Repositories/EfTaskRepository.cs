@@ -30,14 +30,14 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
         public Task GetTaskWithUrgent(int id)
         {
             using var context = new TodoContext();
-            return context.Tasks.Include(i => i.Urgent).Where(i => i.Id == id && i.State == true).FirstOrDefault();
+            return context.Tasks.Include(i => i.Urgent).Where(i => i.Id == id && !i.State).FirstOrDefault();
         }
 
         public Task GetTaskWithReport(int id)
         {
             using var context = new TodoContext();
 
-           return context.Tasks.Include(i => i.Reports).Include(i=>i.AppUser).Where(i => i.Id == id).FirstOrDefault();
-        } 
+            return context.Tasks.Include(i => i.Reports).Include(i => i.AppUser).Where(i => i.Id == id).FirstOrDefault();
+        }
     }
 }
