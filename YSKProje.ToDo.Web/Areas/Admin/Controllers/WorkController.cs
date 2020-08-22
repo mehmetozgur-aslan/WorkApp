@@ -139,5 +139,21 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
             return View(assignPersonelToTaskListModel);
         }
 
+        public IActionResult GetDetails(int id)
+        {
+            var task = _taskService.GetTaskWithReport(id);
+
+            TaskListAllViewModel model = new TaskListAllViewModel()
+            {
+                Id = task.Id,
+                Reports = task.Reports,
+                Name = task.Name,
+                Description = task.Description,
+                AppUser = task.AppUser
+
+            };
+
+            return View(model);
+        }
     }
 }

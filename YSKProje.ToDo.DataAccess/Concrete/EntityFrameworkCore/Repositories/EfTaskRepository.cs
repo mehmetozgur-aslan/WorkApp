@@ -32,5 +32,12 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
             using var context = new TodoContext();
             return context.Tasks.Include(i => i.Urgent).Where(i => i.Id == id && i.State == true).FirstOrDefault();
         }
+
+        public Task GetTaskWithReport(int id)
+        {
+            using var context = new TodoContext();
+
+           return context.Tasks.Include(i => i.Reports).Include(i=>i.AppUser).Where(i => i.Id == id).FirstOrDefault();
+        } 
     }
 }

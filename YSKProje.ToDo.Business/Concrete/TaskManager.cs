@@ -59,5 +59,10 @@ namespace YSKProje.ToDo.Business.Concrete
         {
             return _taskDal.GetTasksByAppUserId(id);
         }
+
+        public Task GetTaskWithReport(int id)
+        {
+            return _taskDal.GetTaskWithReport(id);
+        }
     }
 }
