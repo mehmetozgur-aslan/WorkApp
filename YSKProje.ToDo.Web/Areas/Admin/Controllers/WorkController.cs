@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
+
 
 namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 {
@@ -16,11 +18,13 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
     {
         private readonly IAppUserService _appUserService;
         private readonly ITaskService _taskService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager)
         {
             _appUserService = appUserService;
             _taskService = taskService;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -92,5 +96,48 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
             return View(taskModel);
         }
+
+        [HttpPost]
+        public IActionResult AssignToPerson(AssignPersonelToTaskViewModel model)
+        {
+            var task = _taskService.GetById(model.TaskId);
+            task.AppUserId = model.AppUserId;
+            _taskService.Update(task);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult AssignPersonelToTask(AssignPersonelToTaskViewModel model)
+        {
+            TempData["menu"] = "work";
+            AppUser user = _userManager.Users.FirstOrDefault(x => x.Id == model.AppUserId);
+            YSKProje.ToDo.Entities.Concrete.Task task = _taskService.GetById(model.TaskId);
+
+            if (user == null || task == null)
+            {
+                return NotFound();
+            }
+
+            AppUserListViewModel userModel = new AppUserListViewModel();
+            userModel.Id = user.Id;
+            userModel.Name = user.Name;
+            userModel.Picture = user.Picture;
+            userModel.Surname = user.Surname;
+            userModel.Email = user.Email;
+
+            TaskListViewModel taskModel = new TaskListViewModel();
+            taskModel.Id = task.Id;
+            taskModel.Description = task.Description;
+            taskModel.Urgent = task.Urgent;
+            taskModel.Name = task.Name;
+
+            AssignPersonelToTaskListViewModel assignPersonelToTaskListModel = new AssignPersonelToTaskListViewModel();
+
+            assignPersonelToTaskListModel.AppUser = userModel;
+            assignPersonelToTaskListModel.Task = taskModel;
+
+            return View(assignPersonelToTaskListModel);
+        }
+
     }
 }

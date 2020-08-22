@@ -21,6 +21,12 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
             return context.Tasks.Include(i => i.Urgent).Where(i => !i.State).OrderByDescending(i => i.CreatedDate).ToList();
         }
 
+        public List<Task> GetTasksByAppUserId(int id)
+        {
+            using var context = new TodoContext();
+            return context.Tasks.Where(x => x.AppUserId == id).ToList();
+        }
+
         public Task GetTaskWithUrgent(int id)
         {
             using var context = new TodoContext();

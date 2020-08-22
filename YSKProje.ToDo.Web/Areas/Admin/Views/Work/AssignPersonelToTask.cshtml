@@ -1,0 +1,65 @@
+﻿@model AssignPersonelToTaskListViewModel
+@{
+    ViewData["Title"] = "AssignPersonelToTask";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row mt-2">
+    <div class="card border border-primary shadow">
+        <div class="card-header">
+            <h4 class="text-center lead pt-2">Görev Bilgileri</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.Task.Name</h5>
+            <p class="card-text">@Model.Task.Description</p>
+            <p class="card-text"><strong>Aciliyet Durumu: </strong><span class="badge badge-primary">@Model.Task.Urgent.Definition</span></p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+
+    </div>
+    <div class="col-md-8">
+        <div class="border border-primary card mb-3 p-2" style="max-width: 540px;">
+
+            <div class="card-header">
+                <h5 class="card-title">Personel Bilgileri</h5>
+            </div>
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="~/img/@Model.AppUser.Picture" class="card-img img-thumbnail shadow" style="height:10rem!important;" alt="@Model.AppUser.Name">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.AppUser.Name @Model.AppUser.Surname</h5>
+                        <p class="card-text"><TaskListByUser app-user-id="@Model.AppUser.Id"></TaskListByUser></p>
+                        <p class="card-text">
+                            <small class="text-muted">@Model.AppUser.Email</small>
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+
+        <form asp-action="AssignToPerson" method="post">
+            <p class="lead">
+                Yukarıdaki göreve ilgili personel atanacaktır. Bu işlemi gerçekleştirmek istediğinizden emin misiniz?
+            </p>
+            <div class="form-group text-center">
+                <a asp-action="AssignToPerson" asp-route-id="@Model.Task.Id" class="btn btn-danger btn-sm">Vazgeç</a>
+                @*<input asp-for="AppUser.Id" type="hidden" />
+                    <input asp-for="Task.Id" type="hidden" />*@
+                <input name="TaskId" value="@Model.Task.Id" type="hidden" />
+                <input name="AppUserId" value="@Model.AppUser.Id" type="hidden" />
+
+                <button type="submit" class="btn btn-primary">
+                    Görevlendir
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>

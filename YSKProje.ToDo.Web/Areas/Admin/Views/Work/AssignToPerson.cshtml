@@ -23,8 +23,8 @@
         </form>
     </div>
 
-    <div class="col-md-4">
-        <div class="card border border-primary">
+    <div class="col-md-4 ">
+        <div class="card border border-primary shadow">
             <div class="card-header">
                 <h4 class="text-center lead pt-2">Görev Bilgileri</h4>
             </div>
@@ -41,16 +41,19 @@
 
         @foreach (var personel in (List<AppUserListViewModel>)ViewBag.Personels)
         {
-            <div class="border border-primary card mb-3" style="max-width: 540px;">
+            <div class="border border-primary card mb-3 p-2" style="max-width: 540px;">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <img src="~/img/@personel.Picture" class="card-img" alt="@personel.Name">
+                        <img src="~/img/@personel.Picture" class="card-img img-thumbnail shadow" style="height:10rem!important;" alt="@personel.Name">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
                             <h5 class="card-title">@personel.Name @personel.Surname</h5>
-                            <p class="card-text">Bir görev almış mı</p>
-                            <p class="card-text"><small class="text-muted">@personel.Email</small></p>
+                            <p class="card-text"><TaskListByUser app-user-id="@personel.Id"></TaskListByUser></p>
+                            <p class="card-text">
+                                <small class="text-muted">@personel.Email</small>
+                                <a asp-action="AssignPersonelToTask" asp-route-AppUserId="@personel.Id" asp-route-TaskId="@Model.Id" class="btn btn-primary btn-sm float-right">Görevlendir</a>
+                            </p>
                         </div>
                     </div>
                 </div>

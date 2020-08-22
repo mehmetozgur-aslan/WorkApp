@@ -54,5 +54,10 @@ namespace YSKProje.ToDo.Business.Concrete
         {
             return _taskDal.GetTaskWithUrgent(id);
         }
+
+        public List<Task> GetTasksByAppUserId(int id)
+        {
+            return _taskDal.GetTasksByAppUserId(id);
+        }
     }
 }
