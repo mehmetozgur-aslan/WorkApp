@@ -41,10 +41,10 @@
 
         @foreach (var personel in (List<AppUserListViewModel>)ViewBag.Personels)
         {
-            <div class="border border-primary card mb-3 p-2" style="max-width: 540px;">
+            <div class="card mb-3 p-2" @*style="max-width: 540px;"*@>
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <img src="~/img/@personel.Picture" class="card-img img-thumbnail shadow" style="height:10rem!important;" alt="@personel.Name">
+                        <img src="~/img/@personel.Picture" class="card-img w-100" style="height:10rem!important;" alt="@personel.Name">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

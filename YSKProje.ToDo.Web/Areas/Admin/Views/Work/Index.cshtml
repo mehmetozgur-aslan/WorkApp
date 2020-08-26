@@ -36,28 +36,28 @@
                             <span class="badge badge-success">@item.AppUser.Name çalışıyor</span>
                         }
 
-                }
-            </td>
-            <td>@item.Urgent.Definition</td>
-            <td>@item.Reports.Count</td>
-            <td>
-                @{
-
-                    if (item.AppUser == null)
-                    {
-                        <a asp-action="AssignToPerson" asp-route-id="@item.Id" class="btn btn-info btn-sm">Personel Ata</a>
                     }
-                    else
-                    {
-                        <a asp-action="GetDetails" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detay Göster</a>
+                </td>
+                <td>@item.Urgent.Definition</td>
+                <td>@item.Reports.Count</td>
+                <td>
+                    @{
+
+                        if (item.AppUser == null)
+                        {
+                            <a asp-action="AssignToPerson" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="fas fa-caret-right mr-2"></i> Personel Ata</a>
+                        }
+                        else
+                        {
+                            <a asp-action="GetDetails" asp-route-id="@item.Id" class="btn btn-info btn-sm"><i class="fas fa-info-circle mr-2"></i> Detay Göster</a>
+
+                        }
 
                     }
+                </td>
 
-                }
-            </td>
-
-        </tr>
-    }
+            </tr>
+        }
 
 
     </table>
