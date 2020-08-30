@@ -19,12 +19,14 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         private readonly IAppUserService _appUserService;
         private readonly ITaskService _taskService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IFileService _fileService;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IFileService fileService)
         {
             _appUserService = appUserService;
             _taskService = taskService;
             _userManager = userManager;
+            _fileService = fileService;
         }
 
         public IActionResult Index()
@@ -154,6 +156,17 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
             };
 
             return View(model);
+        }
+
+        public IActionResult GetExcel(int id)
+        {
+          return File(_fileService.ExportExcel(_taskService.GetTaskWithReport(id).Reports),"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",Guid.NewGuid()+".xlsx");
+        }
+
+        public IActionResult GetPDF(int id)
+        {
+            var path = _fileService.ExportPdf(_taskService.GetTaskWithReport(id).Reports);
+            return File(path, "application/pdf", Guid.NewGuid() + ".pdf");
         }
     }
 }
