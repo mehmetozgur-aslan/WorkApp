@@ -4,7 +4,18 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<form class="w-75 mx-auto p-3" method="post">
+@if (TempData["message"] != null)
+{
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        @TempData["message"]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<form asp-action="Index" class="w-75 mx-auto p-3" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="@Model.Id" />
     <div class="form-group">
         <label asp-for="Name"></label>
         <span asp-validation-for="Name" class="text-danger"></span>
@@ -45,15 +56,15 @@
 
             <div class="col-md-12">
                 <label> Fotoğraf Seç: </label>
-                <input type="file" class="form-control-file" name="picture" id="picture"/>
+                <input type="file" class="form-control-file" name="picture" id="picture" />
             </div>
 
         </div>
-    </div>    
-        <button type="submit" class="btn btn-info btn-sm mt-2"><i class="fas fa-check mr-2"></i> Kaydet</button>
-    </form>
+    </div>
+    <button type="submit" class="btn btn-info btn-sm mt-2"><i class="fas fa-check mr-2"></i> Kaydet</button>
+</form>
 
-@section JavaScript{ 
+@section JavaScript{
     <script type="text/javascript">
         $(document).ready(function () {
 
