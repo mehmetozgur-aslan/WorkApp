@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories;
 using YSKProje.ToDo.DataAccess.Interfaces;
@@ -63,6 +65,11 @@ namespace YSKProje.ToDo.Business.Concrete
         public Task GetTaskWithReport(int id)
         {
             return _taskDal.GetTaskWithReport(id);
+        }
+
+        public List<Task> GetAllTaskDatas(Expression<Func<Task, bool>> filter)
+        {
+            return _taskDal.GetAllTaskDatas(filter);
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Contexts;
 using YSKProje.ToDo.DataAccess.Interfaces;
 using YSKProje.ToDo.Entities.Concrete;
@@ -38,6 +40,12 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
             using var context = new TodoContext();
 
             return context.Tasks.Include(i => i.Reports).Include(i => i.AppUser).Where(i => i.Id == id).FirstOrDefault();
+        }
+
+        public List<Task> GetAllTaskDatas(Expression<Func<Task, bool>> filter)
+        {
+            using var context = new TodoContext();
+            return context.Tasks.Include(i => i.Urgent).Include(i => i.Reports).Include(i => i.AppUser).Where(filter).OrderByDescending(i => i.CreatedDate).ToList();
         }
     }
 }
