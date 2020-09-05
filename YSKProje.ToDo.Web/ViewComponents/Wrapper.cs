@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 
-namespace YSKProje.ToDo.Web.Areas.Admin.ViewComponents
+namespace YSKProje.ToDo.Web.ViewComponents
 {
     public class Wrapper : ViewComponent
     {
@@ -31,7 +31,14 @@ namespace YSKProje.ToDo.Web.Areas.Admin.ViewComponents
                 Picture = user.Picture
             };
 
-            return View(model);
+            var roles = _userManager.GetRolesAsync(user).Result;
+
+            if (roles.Contains("Admin"))
+            {
+                return View(model);
+            }
+
+            return View("Member", model);
         }
     }
 }

@@ -1,0 +1,19 @@
+﻿@model AppUserListViewModel
+@{
+    string menu = TempData["menu"]?.ToString();
+}
+
+
+<div class="border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading">
+        <img src="/img/@Model.Picture" alt="@(Model.Name+" "+Model.Surname)" class="w-100 img-thumbnail" style="height:10rem!important;" />
+    </div>
+    <div class="list-group list-group-flush">
+        
+        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-arrow-alt-circle-down"></i> Gelen İş Emirleri</a>
+        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-arrow-alt-circle-up"></i>Tamamladığım işler</a>
+        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-bell mr-2"></i> Bildirimler</a>
+        <a asp-action="Index" asp-controller="Profile" class="list-group-item list-group-item-action @(menu=="profile"?"active":"")"><i class="fas fa-user mr-2"></i> Profilim</a>
+        <a asp-area="" asp-action="SignOut" asp-controller="Home" class="list-group-item list-group-item-action"><i class="fas fa-sign-out-alt mr-2"></i> Çıkış Yap</a>
+    </div>
+</div>
