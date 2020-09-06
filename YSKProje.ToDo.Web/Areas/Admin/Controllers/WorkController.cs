@@ -52,8 +52,6 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
                 taskListAllViewModels.Add(taskListAllViewModel);
             }
-
-
             return View(taskListAllViewModels);
         }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
+using YSKProje.ToDo.Web.Areas.Member.Models;
 
 namespace YSKProje.ToDo.Web.Areas.Member.Controllers
 {
@@ -18,19 +19,23 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
         private readonly IAppUserService _appUserService;
         private readonly ITaskService _taskService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IReportService _reportService;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IReportService reportService)
         {
             _appUserService = appUserService;
             _taskService = taskService;
             _userManager = userManager;
+            _reportService = reportService;
         }
 
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index()
         {
             TempData["menu"] = "work";
 
-            var tasks = _taskService.GetAllTaskDatas(x => x.AppUserId == id && !x.State);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var tasks = _taskService.GetAllTaskDatas(x => x.AppUserId == user.Id && !x.State);
 
             List<TaskListAllViewModel> taskListModel = new List<TaskListAllViewModel>();
 
@@ -49,6 +54,37 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
             }
 
             return View(taskListModel);
+        }
+
+        public IActionResult Add(int taskId)
+        {
+            var task = _taskService.GetTaskWithUrgent(taskId);
+
+            ReportAddViewModel reportAddViewModel = new ReportAddViewModel();
+            reportAddViewModel.TaskId = taskId;
+            reportAddViewModel.Task = task;
+
+            return View(reportAddViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Add(ReportAddViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                _reportService.Save(new Report()
+                {
+                    TaskId = model.TaskId,
+                    Description = model.Definition,
+                    Detail = model.Detail
+
+                });
+
+                return RedirectToAction("Index");
+            }
+
+
+            return View();
         }
     }
 }
