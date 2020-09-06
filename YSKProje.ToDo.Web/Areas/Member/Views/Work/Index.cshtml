@@ -27,7 +27,7 @@
                     <a asp-action="Add" asp-route-taskId="@task.Id" class="btn btn-light btn-sm"><i class="fas fa-plus-circle mr-2"></i> Rapor Yaz</a>
                 }
 
-                <a href="" class="btn btn-dark btn-sm">Tamamlandı olarak işaretle</a>
+                <a class="btn btn-dark btn-sm" data-toggle="modal" data-target="#exampleModal" data-taskId="@task.Id">Tamamlandı olarak işaretle</a>
 
             </p>
             <div class="collapse" id="collapseExample-@index">
@@ -43,7 +43,7 @@
                         <tr>
                             <td>@report.Description</td>
                             <td>@report.Detail</td>
-                            <td><a asp-action="Edit" asp-route-id="@report.Id" class="btn btn-warning btn-sm" ><i class="fas fa-edit mr-2"></i> Düzenle</a></td>
+                            <td><a asp-action="Edit" asp-route-id="@report.Id" class="btn btn-warning btn-sm"><i class="fas fa-edit mr-2"></i> Düzenle</a></td>
                         </tr>
                     }
                 </table>
@@ -55,3 +55,57 @@
 
 }
 
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Uyarı</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center font-weight-bold lead">
+                Bu işlemi gerçekleştirmek istediğinizden emin misiniz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Vazgeç</button>
+                <button id="btnDone" type="button" class="btn btn-primary">Tamamla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JavaScript{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#exampleModel").on("show.bs.modal", function (event) {
+                let btnDone = $(event.relatedTarget);
+                let data = btnDone.data("taskId");
+                $("#btnDone").click(function () {
+
+                    $.ajax({
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        url: "./Work/Done",
+                        data: { taskId: data },
+                        success: function () {
+                            window.location.reload();
+                        },
+                        error: function (err) {
+                            alert(err.responseText);
+                        }                        
+                    });
+                });
+            });
+        });
+
+
+    </script>
+}

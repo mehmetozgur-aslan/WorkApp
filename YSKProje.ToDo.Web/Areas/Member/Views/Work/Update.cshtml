@@ -1,0 +1,60 @@
+﻿@model ReportUpdateViewModel
+@{
+    ViewData["Title"] = "Add";
+    Layout = "~/Areas/Member/Views/Shared/_MemberLayout.cshtml";
+}
+
+
+<form asp-action="Update" class="w-75 mx-auto p-3" method="post">
+
+    <div class="card">
+
+        <div class="lead p-3">
+
+            <div class="card-header">
+                <h5 class="card-text">Görev Bilgiler</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    <span class="text-danger">Görev :</span>@Model.Task.Name
+                </p>
+                <p class="card-text">
+                    <span class="text-danger">Açıklama :</span>@Model.Task.Description
+                </p>
+                <p class="card-text">
+                    <span class="text-danger">Aciliyet :</span>@Model.Task.Urgent.Definition
+                </p>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <input type="hidden" asp-for="ReportId" />
+    <div class="form-group">
+
+        <label asp-for="Definition"></label>
+        <span asp-validation-for="Definition"></span>
+        <input asp-for="Definition" class="form-control" />
+    </div>
+    <div class="form-group">
+
+        <label asp-for="Detail"></label>
+        <span asp-validation-for="Detail" class="text-danger"></span>
+        <textarea asp-for="Detail" class="form-control"> </textarea>
+    </div>
+
+    <div class="form-group">
+        <button asp-action="Index" class="btn btn-warning btn-sm"><i class="fas fa-chevron-circle-left mr-2"></i> Vazgeç</button>
+        <button type="submit" class="btn btn-info btn-sm"><i class="fas fa-check mr-2"></i> Ekle</button>
+
+    </div>
+
+</form>
+
+@section JavaScript{
+    <script src="~/lib/jqueryValidate/jquery.validate.min.js"></script>
+    <script src="~/lib/jqueryUnob/jquery.validate.unobtrusive.min.js"></script>
+}

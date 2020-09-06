@@ -6,12 +6,13 @@ using YSKProje.ToDo.Entities.Concrete;
 
 namespace YSKProje.ToDo.Web.Areas.Member.Models
 {
-    public class ReportAddViewModel
+    public class ReportUpdateViewModel
     {
-        public int TaskId { get; set; }      
+        public int TaskId { get; set; }
+        public int ReportId { get; set; }
 
-        [Required(ErrorMessage ="Tanım boş geçilemez")]
-        [Display(Name ="Tanım")]
+        [Required(ErrorMessage = "Tanım boş geçilemez")]
+        [Display(Name = "Tanım")]
         public string Definition { get; set; }
 
         [Required(ErrorMessage = "Detay boş geçilemez")]
@@ -19,6 +20,5 @@ namespace YSKProje.ToDo.Web.Areas.Member.Models
         public string Detail { get; set; }
 
         public Task Task { get; set; }
-
     }
 }

@@ -86,5 +86,46 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
 
             return View();
         }
+
+        public IActionResult Update(int id)
+        {
+            var report = _reportService.GetReportWithTaskById(id);
+            ReportUpdateViewModel reportUpdateViewModel = new ReportUpdateViewModel();
+            reportUpdateViewModel.ReportId = report.Id;
+            reportUpdateViewModel.Definition = report.Description;
+            reportUpdateViewModel.Detail = report.Detail;
+            reportUpdateViewModel.Task = report.Task;
+            reportUpdateViewModel.TaskId = report.TaskId;
+
+            return View(reportUpdateViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Update(ReportUpdateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Report report = _reportService.GetById(model.ReportId);
+
+                report.Description = model.Definition;
+                report.Detail = model.Detail;
+                
+                _reportService.Update(report);
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        public IActionResult Done(int taskId)
+        {
+            var task = _taskService.GetById(taskId);
+            task.State = true;
+
+            _taskService.Update(task);
+
+            return Json(null);
+        }
     }
 }

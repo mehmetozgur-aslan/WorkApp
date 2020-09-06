@@ -9,7 +9,7 @@ using YSKProje.ToDo.Entities.Concrete;
 namespace YSKProje.ToDo.Business.Concrete
 {
     public class ReportManager : IReportService
-    {      
+    {
         private readonly IReportDal _reportDal;
 
         public ReportManager(IReportDal reportDal)
@@ -30,6 +30,11 @@ namespace YSKProje.ToDo.Business.Concrete
         public Report GetById(int id)
         {
             return _reportDal.GetById(id);
+        }
+
+        public Report GetReportWithTaskById(int id)
+        {
+            return _reportDal.GetReportWithTaskById(id);
         }
 
         public void Save(Report entity)
