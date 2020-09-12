@@ -28,11 +28,13 @@ namespace YSKProje.ToDo.Web
             services.AddScoped<IReportService, ReportManager>();
             services.AddScoped<IAppUserService, AppUserManager>();
             services.AddScoped<IFileService, FileManager>();
+            services.AddScoped<INotificationService, NotificationManager>();
 
             services.AddScoped<ITaskDal, EfTaskRepository>();
             services.AddScoped<IReportDal, EfReportRepository>();
             services.AddScoped<IUrgentDal, EfUrgentRepository>();
             services.AddScoped<IUserDal, EfUserRepository>();
+            services.AddScoped<INotificationDal, EfNotificationRepository>();
             
             
 

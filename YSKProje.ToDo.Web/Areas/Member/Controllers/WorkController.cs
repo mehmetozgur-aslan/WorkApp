@@ -20,13 +20,15 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
         private readonly ITaskService _taskService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IReportService _reportService;
+        private readonly INotificationService _notificationService;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IReportService reportService)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IReportService reportService, INotificationService notificationService)
         {
             _appUserService = appUserService;
             _taskService = taskService;
             _userManager = userManager;
             _reportService = reportService;
+            _notificationService = notificationService;
         }
 
         public async Task<IActionResult> Index()
@@ -68,7 +70,7 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(ReportAddViewModel model)
+        public async Task<IActionResult> Add(ReportAddViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -80,9 +82,21 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
 
                 });
 
+                var adminUserList = await _userManager.GetUsersInRoleAsync("Admin");
+                var activeUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+                foreach (var adminUser in adminUserList)
+                {
+                    _notificationService.Save(new Notification()
+                    {
+                        Description = $"{activeUser.Name} {activeUser.Surname} yeni bir rapor yazdı.",
+                        AppUserId = adminUser.Id,
+
+                    });
+                }
+
                 return RedirectToAction("Index");
             }
-
 
             return View();
         }
@@ -109,7 +123,7 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
 
                 report.Description = model.Definition;
                 report.Detail = model.Detail;
-                
+
                 _reportService.Update(report);
 
                 return RedirectToAction("Index");
@@ -118,12 +132,24 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
             return View(model);
         }
 
-        public IActionResult Done(int taskId)
+        public async Task<IActionResult> Done(int taskId)
         {
             var task = _taskService.GetById(taskId);
             task.State = true;
 
             _taskService.Update(task);
+
+            var adminUserList = await _userManager.GetUsersInRoleAsync("Admin");
+            var activeUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            foreach (var adminUser in adminUserList)
+            {
+                _notificationService.Save(new Notification()
+                {
+                    Description = $"{activeUser.Name} {activeUser.Surname} görevi tamamladı.",
+                    AppUserId = adminUser.Id,
+                });
+            }
 
             return Json(null);
         }
