@@ -14,6 +14,7 @@ namespace YSKProje.ToDo.Business.Interfaces
         List<Task> GetTasksByAppUserId(int id);
         Task GetTaskWithReport(int id);
         List<Task> GetAllTaskDatas(Expression<Func<Task, bool>> filter);
+        List<Task> GetAllTaskDatasNotCompleted(out int totalPage, int userId, int activePage=1);
 
     }
 }

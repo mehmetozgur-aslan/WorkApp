@@ -13,5 +13,6 @@ namespace YSKProje.ToDo.Entities.Concrete
         public string Picture { get; set; } = "default.png";
 
         public List<Task> Tasks { get; set; }
+        public List<Notification> Notifications { get; set; }
     }
 }

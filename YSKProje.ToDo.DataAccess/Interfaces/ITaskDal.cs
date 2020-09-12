@@ -10,6 +10,7 @@ namespace YSKProje.ToDo.DataAccess.Interfaces
         List<Task> GetNotCompletedTaskListWithUrgent();
         List<Task> GetAllTaskDatas();
         List<Task> GetAllTaskDatas(Expression<Func<Task,bool>> filter);
+        List<Task> GetCompletedAllTaskDatas(out int totalPage,int userId, int activePage);
         Task GetTaskWithUrgent(int id);
         List<Task> GetTasksByAppUserId(int id);
         Task GetTaskWithReport(int id);

@@ -23,11 +23,13 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Contexts
             modelBuilder.ApplyConfiguration(new UrgentMap());
             modelBuilder.ApplyConfiguration(new ReportMap());
             modelBuilder.ApplyConfiguration(new AppUserMap());
+            modelBuilder.ApplyConfiguration(new NotificationMap());
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Urgent> Urgents { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

@@ -47,5 +47,15 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
             using var context = new TodoContext();
             return context.Tasks.Include(i => i.Urgent).Include(i => i.Reports).Include(i => i.AppUser).Where(filter).OrderByDescending(i => i.CreatedDate).ToList();
         }
+
+        public List<Task> GetCompletedAllTaskDatas(out int totalPage, int userId, int activePage = 1)
+        {
+            using var context = new TodoContext();
+            var returnValue = context.Tasks.Include(i => i.Urgent).Include(i => i.Reports).Include(i => i.AppUser).Where(i => i.AppUserId == userId && i.State).OrderByDescending(i => i.CreatedDate);
+
+            totalPage = (int)(Math.Ceiling(((decimal)(returnValue.Count() / 3))));
+
+            return returnValue.Skip((activePage - 1) * 3).Take(3).ToList();
+        }
     }
 }
