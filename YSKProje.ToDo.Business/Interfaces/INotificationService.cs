@@ -7,5 +7,6 @@ namespace YSKProje.ToDo.Business.Interfaces
 {
     public interface INotificationService : IGenericService<Notification>
     {
+        List<Notification> GetNotReadByUserId(int appUserId);
     }
 }

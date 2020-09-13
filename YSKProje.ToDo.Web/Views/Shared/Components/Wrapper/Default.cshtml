@@ -14,7 +14,20 @@
         <a asp-action="Index" asp-controller="Work" asp-area="Admin" class="list-group-item list-group-item-action @(menu=="work"?"active":"")"><i class="fas fa-file mr-2"></i> İş Emirleri</a>
         <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-chart-pie"></i> Grafikler</a>
         <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-chart-area mr-2"></i> İstatistikler</a>
-        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-bell mr-2"></i> Bildirimler</a>
+
+
+
+        <a asp-action="Index" asp-controller="Notification" class="list-group-item list-group-item-action position-relative">
+            <i class="fas fa-bell mr-2"></i>
+            @if (ViewBag.NotificationCount > 0)
+            {
+                <sub class="badge badge-info badge-pill position-absolute" style="bottom:0.625rem!important; left:1.7rem!important;">@ViewBag.NotificationCount</sub>
+            }
+            Bildirimler
+        </a>
+
+
+
         <a asp-action="Index" asp-controller="Profile" class="list-group-item list-group-item-action @(menu=="profile"?"active":"")"><i class="fas fa-user mr-2"></i> Profilim</a>
         <a asp-area="" asp-action="SignOut" asp-controller="Home" class="list-group-item list-group-item-action"><i class="fas fa-sign-out-alt mr-2"></i> Çıkış Yap</a>
     </div>

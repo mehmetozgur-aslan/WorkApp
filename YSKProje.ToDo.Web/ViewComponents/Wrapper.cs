@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 
@@ -12,10 +13,12 @@ namespace YSKProje.ToDo.Web.ViewComponents
     public class Wrapper : ViewComponent
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly INotificationService _notificationService;
 
-        public Wrapper(UserManager<AppUser> userManager)
+        public Wrapper(UserManager<AppUser> userManager, INotificationService notificationService)
         {
             _userManager = userManager;
+            _notificationService = notificationService;
         }
 
         public IViewComponentResult Invoke()
@@ -30,6 +33,9 @@ namespace YSKProje.ToDo.Web.ViewComponents
                 Email = user.Email,
                 Picture = user.Picture
             };
+
+            var notificationCount = _notificationService.GetNotReadByUserId(user.Id).Count;
+            ViewBag.NotificationCount = notificationCount;
 
             var roles = _userManager.GetRolesAsync(user).Result;
 

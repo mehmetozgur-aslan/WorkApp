@@ -20,13 +20,15 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         private readonly ITaskService _taskService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IFileService _fileService;
+        private readonly INotificationService _notificationService;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IFileService fileService)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IFileService fileService, INotificationService notificationService)
         {
             _appUserService = appUserService;
             _taskService = taskService;
             _userManager = userManager;
             _fileService = fileService;
+            _notificationService = notificationService;
         }
 
         public IActionResult Index()
@@ -102,7 +104,14 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         {
             var task = _taskService.GetById(model.TaskId);
             task.AppUserId = model.AppUserId;
+
             _taskService.Update(task);
+
+            _notificationService.Save(new Notification
+            {
+                AppUserId = model.AppUserId,
+                Description = $"{task.Name} isimli iş için görevlendirildiniz."
+            });
 
             return RedirectToAction("Index");
         }
@@ -158,7 +167,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
         public IActionResult GetExcel(int id)
         {
-          return File(_fileService.ExportExcel(_taskService.GetTaskWithReport(id).Reports),"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",Guid.NewGuid()+".xlsx");
+            return File(_fileService.ExportExcel(_taskService.GetTaskWithReport(id).Reports), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Guid.NewGuid() + ".xlsx");
         }
 
         public IActionResult GetPDF(int id)

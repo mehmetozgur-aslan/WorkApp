@@ -31,6 +31,11 @@ namespace YSKProje.ToDo.Business.Concrete
             return _notificationDal.GetById(id);
         }
 
+        public List<Notification> GetNotReadByUserId(int appUserId)
+        {
+          return _notificationDal.GetNotReadByUserId(appUserId);
+        }
+
         public void Save(Notification entity)
         {
             _notificationDal.Save(entity);
