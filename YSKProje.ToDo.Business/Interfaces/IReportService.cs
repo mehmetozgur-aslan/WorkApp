@@ -8,6 +8,7 @@ namespace YSKProje.ToDo.Business.Interfaces
     public interface IReportService:IGenericService<Report>
     {
         Report GetReportWithTaskById(int id);
+        int GetReportCountByUserId(int userId);
 
     }
 }

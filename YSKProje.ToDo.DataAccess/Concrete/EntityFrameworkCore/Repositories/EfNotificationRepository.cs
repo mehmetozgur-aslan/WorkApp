@@ -16,5 +16,12 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
 
             return todoContext.Notifications.Where(x => x.AppUserId == appUserId && !x.State).ToList();
         }
+
+        public int GetNotReadNotificationCountByUserId(int appUserId)
+        {
+            using TodoContext todoContext = new TodoContext();
+
+            return todoContext.Notifications.Count(x => x.AppUserId == appUserId && !x.State);
+        }
     }
 }

@@ -76,5 +76,15 @@ namespace YSKProje.ToDo.Business.Concrete
         {
             return _taskDal.GetCompletedAllTaskDatas(out totalPage, userId, activePage);
         }
+
+        public int GetCompletedTaskCountByUserId(int userId)
+        {
+            return _taskDal.GetCompletedTaskCountByUserId(userId);
+        }
+
+        public int GetNotCompletedTaskCountByUserId(int userId)
+        {
+            return _taskDal.GetNotCompletedTaskCountByUserId(userId);
+        }
     }
 }

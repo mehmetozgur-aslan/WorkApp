@@ -32,6 +32,11 @@ namespace YSKProje.ToDo.Business.Concrete
             return _reportDal.GetById(id);
         }
 
+        public int GetReportCountByUserId(int userId)
+        {
+            return _reportDal.GetReportCountByUserId(userId);
+        }
+
         public Report GetReportWithTaskById(int id)
         {
             return _reportDal.GetReportWithTaskById(id);
