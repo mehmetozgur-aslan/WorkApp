@@ -9,5 +9,6 @@ namespace YSKProje.ToDo.DataAccess.Interfaces
     {
         Report GetReportWithTaskById(int id);
         int GetReportCountByUserId(int userId);
+        int GetReportCount();
     }
 }

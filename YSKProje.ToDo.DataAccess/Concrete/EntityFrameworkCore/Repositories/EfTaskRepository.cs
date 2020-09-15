@@ -72,5 +72,19 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
 
             return context.Tasks.Count(x => x.AppUserId == userId && !x.State);
         }
+
+        public int GetNotAssignTaskCount()
+        {
+            using var context = new TodoContext();
+
+            return context.Tasks.Count(x => x.AppUserId == null && !x.State);
+        }
+
+        public int GetCompletedTaskCount()
+        {
+            using var context = new TodoContext();
+
+            return context.Tasks.Count(x => x.AppUserId != null && x.State);
+        }
     }
 }

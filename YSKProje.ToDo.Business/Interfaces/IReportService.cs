@@ -9,6 +9,6 @@ namespace YSKProje.ToDo.Business.Interfaces
     {
         Report GetReportWithTaskById(int id);
         int GetReportCountByUserId(int userId);
-
+        int GetReportCount();
     }
 }

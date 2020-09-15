@@ -9,13 +9,13 @@
         <img src="/img/@Model.Picture" alt="@(Model.Name+" "+Model.Surname)" class="w-100 img-thumbnail" style="height:10rem!important;" />
     </div>
     <div class="list-group list-group-flush">
+
+        <a asp-action="Index" asp-controller="Home" class="list-group-item list-group-item-action @(menu=="work"?"active":"")"><i class="fas fa-home mr-2"></i> Anasayfa</a>
+
         <a asp-action="Index" asp-controller="Task" asp-area="Admin" class="list-group-item list-group-item-action @(menu=="task"?"active":"")"><i class="fas fa-tasks mr-2"></i> Görev İşlemleri</a>
         <a asp-action="Index" asp-controller="Urgent" asp-area="Admin" class="list-group-item list-group-item-action @(menu=="urgent"?"active":"")"><i class="fas fa-exclamation mr-2"></i> Aciliyet İşlemleri</a>
         <a asp-action="Index" asp-controller="Work" asp-area="Admin" class="list-group-item list-group-item-action @(menu=="work"?"active":"")"><i class="fas fa-file mr-2"></i> İş Emirleri</a>
-        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-chart-pie"></i> Grafikler</a>
-        <a href="#" class="list-group-item list-group-item-action"><i class="fas fa-chart-area mr-2"></i> İstatistikler</a>
-
-
+        <a asp-action="Index" asp-controller="Chart" class="list-group-item list-group-item-action"><i class="fas fa-chart-pie"></i> Grafikler</a>
 
         <a asp-action="Index" asp-controller="Notification" class="list-group-item list-group-item-action position-relative">
             <i class="fas fa-bell mr-2"></i>

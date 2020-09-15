@@ -16,5 +16,7 @@ namespace YSKProje.ToDo.DataAccess.Interfaces
         Task GetTaskWithReport(int id);
         int GetCompletedTaskCountByUserId(int userId);
         int GetNotCompletedTaskCountByUserId(int userId);
+        int GetNotAssignTaskCount();
+        int GetCompletedTaskCount();
     }
 }

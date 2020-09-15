@@ -11,6 +11,13 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
 {
     public class EfReportRepository : EfGenericRepository<Report>, IReportDal
     {
+        public int GetReportCount()
+        {
+            using var context = new TodoContext();
+
+            return context.Reports.Count();
+        }
+
         public int GetReportCountByUserId(int userId)
         {
             using var context = new TodoContext();

@@ -17,6 +17,9 @@ namespace YSKProje.ToDo.Business.Interfaces
         List<Task> GetAllTaskDatasNotCompleted(out int totalPage, int userId, int activePage = 1);
         int GetCompletedTaskCountByUserId(int userId);
         int GetNotCompletedTaskCountByUserId(int userId);
+        int GetNotAssignTaskCount();
+        int GetCompletedTaskCount();
+
 
     }
 }
