@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,32 @@ namespace YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories
             result = result.Skip((activePage - 1) * 3).Take(3);
 
             return result.ToList();
+        }
+
+        public List<DualHelper> GetUsersWithMostCompletedTask()
+        {
+            using var context = new TodoContext();
+
+            var result = context.Tasks.Include(I => I.AppUser).Where(I => I.State).GroupBy(I => I.AppUser.UserName).OrderByDescending(I => I.Count()).Take(5).Select(I => new DualHelper
+            {
+                Username = I.Key,
+                TaskCount = I.Count()
+            }).ToList();
+
+            return result;
+        }
+
+        public List<DualHelper> GetUsersWithMostWorkingTask()
+        {
+            using var context = new TodoContext();
+
+            var result = context.Tasks.Include(I => I.AppUser).Where(I => !I.State && I.AppUser != null).GroupBy(I => I.AppUser.UserName).OrderByDescending(I => I.Count()).Take(5).Select(I => new DualHelper
+            {
+                Username = I.Key,
+                TaskCount = I.Count()
+            }).ToList();
+
+            return result;
         }
     }
 }

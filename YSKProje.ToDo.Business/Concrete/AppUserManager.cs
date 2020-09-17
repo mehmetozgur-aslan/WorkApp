@@ -16,6 +16,16 @@ namespace YSKProje.ToDo.Business.Concrete
             _userDal = userDal;
         }
 
+        public List<DualHelper> GetUsersWithMostCompletedTask()
+        {
+            return _userDal.GetUsersWithMostCompletedTask();
+        }
+
+        public List<DualHelper> GetUsersWithMostWorkingTask()
+        {
+            return _userDal.GetUsersWithMostWorkingTask();
+        }
+
         public List<AppUser> GetUserWithoutAdmin()
         {
             return _userDal.GetUserWithoutAdmin();

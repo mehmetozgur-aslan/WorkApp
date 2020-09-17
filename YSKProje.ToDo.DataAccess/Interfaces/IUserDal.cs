@@ -9,5 +9,7 @@ namespace YSKProje.ToDo.DataAccess.Interfaces
     {
         List<AppUser> GetUserWithoutAdmin();
         List<AppUser> GetUserWithoutAdmin(out int totalPage, string name, int activePage);
+        List<DualHelper> GetUsersWithMostCompletedTask();
+        List<DualHelper> GetUsersWithMostWorkingTask();
     }
 }
