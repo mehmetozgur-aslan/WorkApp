@@ -29,7 +29,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var user = _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
             ViewBag.NotAssignTaskCount = _taskService.GetNotAssignTaskCount();
             ViewBag.CompletedTaskCount = _taskService.GetCompletedTaskCount();

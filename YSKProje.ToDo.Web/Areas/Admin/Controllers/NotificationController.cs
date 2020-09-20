@@ -38,7 +38,6 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
                 notificationListViewModel.Id = notification.Id;
                 notificationListViewModel.Description = notification.Description;
 
-
                 notificationListViewModels.Add(notificationListViewModel);
             }
 
