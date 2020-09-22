@@ -32,7 +32,7 @@ namespace YSKProje.ToDo.Business.Concrete
             var returnPath = "/document/" + fileName;
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/documents/" + fileName);
 
-            var stream = new FileStream("", FileMode.Create);
+            var stream = new FileStream(path, FileMode.Create);
 
             Document document = new Document(PageSize.A4, 25f, 25f, 25f, 25f);
             PdfWriter.GetInstance(document, stream);

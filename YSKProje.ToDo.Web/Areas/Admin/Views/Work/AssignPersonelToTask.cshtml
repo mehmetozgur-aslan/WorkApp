@@ -103,7 +103,7 @@
                     <div class="card-body">
                         <h5 class="card-title">@Model.AppUser.Name @Model.AppUser.Surname</h5>
                         <p class="card-text">
-                            <getirGorevAppUserId app-user-id="@Model.AppUser.Id"></getirGorevAppUserId>
+                            <TaskListByUser app-user-id="@Model.AppUser.Id"></TaskListByUser>
                         </p>
                         <p class="card-text">
                             <small class="text-muted">@Model.AppUser.Email</small>
@@ -121,7 +121,7 @@
                 Yukarıdaki göreve ilgili personel atanacaktır. Bu işlemi gerçekleştirmek istediğinizden emin misiniz?
             </p>
             <div class="form-group text-center">
-                <a asp-action="AssignToPerson" asp-route-id="@Model.Task.Id" class="btn btn-primary "><i class="fas fa-chevron-circle-left mr-2"></i>Vazgeç</a>
+                <a asp-action="AssignToPerson" asp-route-id="@Model.Task.Id" class="btn btn-primary"><i class="fas fa-chevron-circle-left mr-2"></i>Vazgeç</a>
                 <input type="hidden" name="AppUserId" value="@Model.AppUser.Id" />
                 <input type="hidden" name="TaskId" value="@Model.Task.Id" />
                 <button type="submit" class="btn btn-info "><i class="fas fa-check mr-2"></i>Görevlendir</button>
