@@ -8,17 +8,18 @@ namespace YSKProje.ToDo.Web.Areas.Member.Models
 {
     public class ReportAddViewModel
     {
-        public int TaskId { get; set; }      
+        public int TaskId { get; set; }
 
-        [Required(ErrorMessage ="Tanım boş geçilemez")]
-        [Display(Name ="Tanım")]
+        //[Required(ErrorMessage ="Tanım boş geçilemez")]
+        //[Display(Name ="Tanım")]
         public string Definition { get; set; }
 
-        [Required(ErrorMessage = "Detay boş geçilemez")]
-        [Display(Name = "Detay")]
+        //[Required(ErrorMessage = "Detay boş geçilemez")]
+        //[Display(Name = "Detay")]
         public string Detail { get; set; }
 
-        public Task Task { get; set; }
+        // public Task Task { get; set; }
+
 
     }
 }
