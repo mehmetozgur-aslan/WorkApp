@@ -16,6 +16,6 @@ namespace YSKProje.ToDo.DTO.DTOs.ReportDtos
         //[Display(Name = "Detay")]
         public string Detail { get; set; }
 
-        public Task Task { get; set; }
+        //public Task Task { get; set; }
     }
 }
