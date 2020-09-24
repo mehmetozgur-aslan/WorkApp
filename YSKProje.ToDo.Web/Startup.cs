@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,9 +13,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using YSKProje.ToDo.Business.Concrete;
 using YSKProje.ToDo.Business.Interfaces;
+using YSKProje.ToDo.Business.ValidationRules.FluentValidation;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Contexts;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Repositories;
 using YSKProje.ToDo.DataAccess.Interfaces;
+using YSKProje.ToDo.DTO.DTOs.AppUserDtos;
+using YSKProje.ToDo.DTO.DTOs.ReportDtos;
+using YSKProje.ToDo.DTO.DTOs.TaskDtos;
+using YSKProje.ToDo.DTO.DTOs.UrgentDtos;
 using YSKProje.ToDo.Entities.Concrete;
 
 namespace YSKProje.ToDo.Web
@@ -35,8 +43,8 @@ namespace YSKProje.ToDo.Web
             services.AddScoped<IUrgentDal, EfUrgentRepository>();
             services.AddScoped<IUserDal, EfUserRepository>();
             services.AddScoped<INotificationDal, EfNotificationRepository>();
-            
-            
+
+
 
             services.AddDbContext<TodoContext>();
             services.AddIdentity<AppUser, AppRole>(opt =>
@@ -58,7 +66,19 @@ namespace YSKProje.ToDo.Web
                 opt.LoginPath = "/Home/Index";
             });
 
-            services.AddControllersWithViews();
+            services.AddAutoMapper(typeof(Startup)); //Dependency injection ile alabilmek için
+
+            //Bir DTO için validasyon iþlemi varsa bu validasyonu belirtilen validator classýyla yap
+            services.AddTransient<IValidator<AddUrgentDto>, UrgentAddValidator>();
+            services.AddTransient<IValidator<UpdateUrgentDto>, UrgentUpdateValidator>();
+            services.AddTransient<IValidator<AddAppUserDto>, AppUserAddValidator>();
+            services.AddTransient<IValidator<SignInAppUserDto>, AppUserSignInValidator>();
+            services.AddTransient<IValidator<AddTaskDto>, TaskAddValidator>();
+            services.AddTransient<IValidator<UpdateTaskDto>, TaskUpdateValidator>();
+            services.AddTransient<IValidator<AddReportDto>, ReportAddValidator>();
+            services.AddTransient<IValidator<UpdateReportDto>, ReportUpdateValidator>();
+
+            services.AddControllersWithViews().AddFluentValidation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
