@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
+using YSKProje.ToDo.DTO.DTOs.AppUserDtos;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Models;
 
@@ -27,7 +28,7 @@ namespace YSKProje.ToDo.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(AppUserSignInModel model)
+        public async Task<IActionResult> Login(SignInAppUserDto model)
         {
             if (ModelState.IsValid)
             {
@@ -61,11 +62,11 @@ namespace YSKProje.ToDo.Web.Controllers
 
         public ActionResult Register()
         {
-            return View(new AppUserAddViewModel());
+            return View(new AddAppUserDto());
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register(AppUserAddViewModel model)
+        public async Task<ActionResult> Register(AddAppUserDto model)
         {
             if (ModelState.IsValid)
             {

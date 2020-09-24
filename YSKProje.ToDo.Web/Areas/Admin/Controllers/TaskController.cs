@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using YSKProje.ToDo.Business.Interfaces;
+using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 using Task = YSKProje.ToDo.Entities.Concrete.Task;
@@ -18,34 +20,21 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
     {
         private readonly ITaskService _taskService;
         private readonly IUrgentService _urgentService;
-        public TaskController(ITaskService taskService, IUrgentService urgentService)
+        private readonly IMapper _mapper;
+        public TaskController(ITaskService taskService, IUrgentService urgentService, IMapper mapper)
         {
             _urgentService = urgentService;
             _taskService = taskService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
             TempData["menu"] = "task";
-            List<Task> tasks = _taskService.GetNotCompletedTaskListWithUrgent();
 
-            List<TaskListViewModel> taskListViewModels = new List<TaskListViewModel>();
+            List<ListTaskDto> listTaskDto = _mapper.Map<List<ListTaskDto>>(_taskService.GetNotCompletedTaskListWithUrgent());
 
-            foreach (var task in tasks)
-            {
-                TaskListViewModel taskListViewModel = new TaskListViewModel();
-
-                taskListViewModel.Id = task.Id;
-                taskListViewModel.Name = task.Name;
-                taskListViewModel.State = task.State;
-                taskListViewModel.CreatedDate = task.CreatedDate;
-                taskListViewModel.Description = task.Description;
-                taskListViewModel.Urgent = task.Urgent;
-                taskListViewModel.UrgentId = task.UrgentId;
-                taskListViewModels.Add(taskListViewModel);
-            }
-
-            return View(taskListViewModels);
+            return View(listTaskDto);
         }
 
         public IActionResult Add()
@@ -54,11 +43,11 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
             ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition");
 
-            return View(new TaskAddViewModel());
+            return View(new AddTaskDto());
         }
 
         [HttpPost]
-        public IActionResult Add(TaskAddViewModel model)
+        public IActionResult Add(AddTaskDto model)
         {
             if (ModelState.IsValid)
             {
@@ -79,28 +68,16 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         public IActionResult Update(int id)
         {
             TempData["menu"] = "task";
-            Task task = _taskService.GetById(id);
 
-            if (task == null)
-            {
-                return NotFound();
-            }
+            UpdateTaskDto updateTaskDto = _mapper.Map<UpdateTaskDto>(_taskService.GetById(id));
 
-            TaskUpdateViewModel taskUpdateViewModel = new TaskUpdateViewModel
-            {
-                Id = task.Id,
-                Name = task.Name,
-                Description = task.Description,
-                UrgentId = task.UrgentId
-            };
+            ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition", updateTaskDto.UrgentId);
 
-            ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition", task.UrgentId);
-
-            return View(taskUpdateViewModel);
+            return View(updateTaskDto);
         }
 
         [HttpPost]
-        public IActionResult Update(TaskUpdateViewModel model)
+        public IActionResult Update(UpdateTaskDto model)
         {
             if (ModelState.IsValid)
             {
@@ -116,7 +93,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition");
+            ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition", model.UrgentId);
             return View(model);
         }
 

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
+using YSKProje.ToDo.DTO.DTOs.AppUserDtos;
+using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 
@@ -21,40 +24,25 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IFileService _fileService;
         private readonly INotificationService _notificationService;
+        private readonly IMapper _mapper;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IFileService fileService, INotificationService notificationService)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IFileService fileService, INotificationService notificationService, IMapper mapper)
         {
             _appUserService = appUserService;
             _taskService = taskService;
             _userManager = userManager;
             _fileService = fileService;
             _notificationService = notificationService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
         {
             TempData["menu"] = "work";
 
-            List<Entities.Concrete.Task> tasks = _taskService.GetAllTaskDatas();
+            List<TaskListAllDto> listTaskDto = _mapper.Map<List<TaskListAllDto>>(_taskService.GetAllTaskDatas());
 
-            List<TaskListAllViewModel> taskListAllViewModels = new List<TaskListAllViewModel>();
-
-            foreach (var task in tasks)
-            {
-                TaskListAllViewModel taskListAllViewModel = new TaskListAllViewModel()
-                {
-                    Id = task.Id,
-                    AppUser = task.AppUser,
-                    CreatedDate = task.CreatedDate,
-                    Description = task.Description,
-                    Name = task.Name,
-                    Reports = task.Reports,
-                    Urgent = task.Urgent
-                };
-
-                taskListAllViewModels.Add(taskListAllViewModel);
-            }
-            return View(taskListAllViewModels);
+            return View(listTaskDto);
         }
 
         public IActionResult AssignToPerson(int id, string s, int page = 1)
@@ -68,79 +56,43 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
             ViewBag.TotalPage = totalPage;
             ViewBag.Searched = s;
 
-            List<AppUserListViewModel> appUserListViewList = new List<AppUserListViewModel>();
+            var userListDto = _mapper.Map<List<ListAppUserDto>>(userList);
 
-            foreach (var user in userList)
-            {
-                AppUserListViewModel userListViewModel = new AppUserListViewModel();
+            ViewBag.Personels = userListDto;
 
-                userListViewModel.Id = user.Id;
-                userListViewModel.Name = user.Name;
-                userListViewModel.Surname = user.Surname;
-                userListViewModel.Email = user.Email;
-                userListViewModel.Picture = user.Picture;
-
-                appUserListViewList.Add(userListViewModel);
-            }
-
-            ViewBag.Personels = appUserListViewList;
-
-            TaskListViewModel taskModel = new TaskListViewModel
-            {
-                Id = task.Id,
-                CreatedDate = task.CreatedDate,
-                Description = task.Description,
-                Name = task.Name,
-                State = task.State,
-                UrgentId = task.UrgentId,
-                Urgent = task.Urgent
-            };
+            var taskModel = _mapper.Map<ListTaskDto>(task);
 
             return View(taskModel);
         }
 
         [HttpPost]
-        public IActionResult AssignToPerson(AssignPersonelToTaskViewModel model)
+        public IActionResult AssignToPerson(AssignPersonelToTaskListDto model)
         {
-            var task = _taskService.GetById(model.TaskId);
-            task.AppUserId = model.AppUserId;
+            var task = _taskService.GetById(model.Task.Id);
+            task.AppUserId = model.AppUser.Id;
 
             _taskService.Update(task);
 
             _notificationService.Save(new Notification
             {
-                AppUserId = model.AppUserId,
+                AppUserId = model.AppUser.Id,
                 Description = $"{task.Name} isimli iş için görevlendirildiniz."
             });
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult AssignPersonelToTask(AssignPersonelToTaskViewModel model)
+        public IActionResult AssignPersonelToTask(AssignPersonelToTaskDto model)
         {
             TempData["menu"] = "work";
             AppUser user = _userManager.Users.FirstOrDefault(x => x.Id == model.AppUserId);
             YSKProje.ToDo.Entities.Concrete.Task task = _taskService.GetTaskWithUrgent(model.TaskId);
 
-            if (user == null || task == null)
-            {
-                return NotFound();
-            }
+            var userModel = _mapper.Map<ListAppUserDto>(user);
 
-            AppUserListViewModel userModel = new AppUserListViewModel();
-            userModel.Id = user.Id;
-            userModel.Name = user.Name;
-            userModel.Picture = user.Picture;
-            userModel.Surname = user.Surname;
-            userModel.Email = user.Email;
+            var taskModel = _mapper.Map<ListTaskDto>(task);
 
-            TaskListViewModel taskModel = new TaskListViewModel();
-            taskModel.Id = task.Id;
-            taskModel.Description = task.Description;
-            taskModel.Urgent = task.Urgent;
-            taskModel.Name = task.Name;
-
-            AssignPersonelToTaskListViewModel assignPersonelToTaskListModel = new AssignPersonelToTaskListViewModel();
+            AssignPersonelToTaskListDto assignPersonelToTaskListModel = new AssignPersonelToTaskListDto();
 
             assignPersonelToTaskListModel.AppUser = userModel;
             assignPersonelToTaskListModel.Task = taskModel;
@@ -150,19 +102,9 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
         public IActionResult GetDetails(int id)
         {
-            var task = _taskService.GetTaskWithReport(id);
+            TaskListAllDto taskList = _mapper.Map<TaskListAllDto>(_taskService.GetTaskWithReport(id));
 
-            TaskListAllViewModel model = new TaskListAllViewModel()
-            {
-                Id = task.Id,
-                Reports = task.Reports,
-                Name = task.Name,
-                Description = task.Description,
-                AppUser = task.AppUser
-
-            };
-
-            return View(model);
+            return View(taskList);
         }
 
         public IActionResult GetExcel(int id)

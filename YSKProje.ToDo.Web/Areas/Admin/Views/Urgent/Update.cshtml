@@ -1,4 +1,4 @@
-﻿@model UrgentUpdateViewModel
+﻿@model UpdateUrgentDto
 @{
     ViewData["Title"] = "Update";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -7,7 +7,7 @@
 <form asp-action="Update" method="post" class="w-75 mx-auto p-3">
     <input hidden="hidden" asp-for="Id" />
     <div class="form-group">
-        <label asp-for="Definition"></label>
+        <label asp-for="Definition">Tanım :</label>
         <span asp-validation-for="Definition" class="text-danger"></span>
         <input type="text" asp-for="Definition" class="form-control" />
     </div>

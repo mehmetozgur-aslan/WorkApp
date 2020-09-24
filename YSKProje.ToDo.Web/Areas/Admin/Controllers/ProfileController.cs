@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using YSKProje.ToDo.DTO.DTOs.AppUserDtos;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 
@@ -17,10 +19,12 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
     public class ProfileController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public ProfileController(UserManager<AppUser> userManager)
+        public ProfileController(UserManager<AppUser> userManager, IMapper mapper)
         {
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -29,20 +33,13 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-            AppUserListViewModel model = new AppUserListViewModel()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                Picture = user.Picture
-            };
+            var model = _mapper.Map<ListAppUserDto>(user);
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(AppUserListViewModel model, IFormFile picture)
+        public async Task<IActionResult> Index(ListAppUserDto model, IFormFile picture)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +73,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
                 {
                     foreach (var err in result.Errors)
                     {
-                        ModelState.AddModelError("", err.Description);                        
+                        ModelState.AddModelError("", err.Description);
                     }
                 }
             }

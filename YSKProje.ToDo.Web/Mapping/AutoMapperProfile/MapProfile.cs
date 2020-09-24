@@ -60,6 +60,9 @@ namespace YSKProje.ToDo.Web.Mapping.AutoMapperProfile
             CreateMap<UpdateTaskDto, Entities.Concrete.Task>();
             CreateMap<Entities.Concrete.Task, UpdateTaskDto>();
 
+            CreateMap<Entities.Concrete.Task, TaskListAllDto>();
+            CreateMap<TaskListAllDto, Entities.Concrete.Task>();
+
             #endregion
 
             #region Rapor-RaporDto
@@ -71,6 +74,8 @@ namespace YSKProje.ToDo.Web.Mapping.AutoMapperProfile
             CreateMap<Report, UpdateReportDto>();
 
             #endregion
+
+          
 
         }
     }
