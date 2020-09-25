@@ -10,26 +10,26 @@ using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DTO.DTOs.ReportDtos;
 using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
-
+using YSKProje.ToDo.Web.BaseControllers;
 
 namespace YSKProje.ToDo.Web.Areas.Member.Controllers
 {
     [Area("Member")]
     [Authorize(Roles = "Member")]
-    public class WorkController : Controller
+    public class WorkController : BaseIdentityController
     {
         private readonly IAppUserService _appUserService;
         private readonly ITaskService _taskService;
-        private readonly UserManager<AppUser> _userManager;
+        //private readonly UserManager<AppUser> _userManager;
         private readonly IReportService _reportService;
         private readonly INotificationService _notificationService;
         private readonly IMapper _mapper;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IReportService reportService, INotificationService notificationService, IMapper mapper)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IReportService reportService, INotificationService notificationService, IMapper mapper):base(userManager)
         {
             _appUserService = appUserService;
             _taskService = taskService;
-            _userManager = userManager;
+            //_userManager = userManager;
             _reportService = reportService;
             _notificationService = notificationService;
             _mapper = mapper;
@@ -39,7 +39,7 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
         {
             TempData["menu"] = "work";
 
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await GetSingInUser();
 
             var tasks = _taskService.GetAllTaskDatas(x => x.AppUserId == user.Id && !x.State);
 
@@ -89,7 +89,7 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
                 });
 
                 var adminUserList = await _userManager.GetUsersInRoleAsync("Admin");
-                var activeUser = await _userManager.FindByNameAsync(User.Identity.Name);
+                var activeUser = await GetSingInUser();
 
                 foreach (var adminUser in adminUserList)
                 {
@@ -115,9 +115,7 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
             updateReportDto.Definition = report.Description;
             updateReportDto.Detail = report.Detail;
             updateReportDto.Task = report.Task;
-            updateReportDto.TaskId = report.TaskId;
-
-            
+            updateReportDto.TaskId = report.TaskId;            
 
             return View(updateReportDto);
         }
@@ -148,7 +146,7 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
             _taskService.Update(task);
 
             var adminUserList = await _userManager.GetUsersInRoleAsync("Admin");
-            var activeUser = await _userManager.FindByNameAsync(User.Identity.Name);
+            var activeUser = await GetSingInUser();
 
             foreach (var adminUser in adminUserList)
             {

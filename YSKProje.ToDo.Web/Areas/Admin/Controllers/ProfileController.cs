@@ -10,20 +10,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.DTO.DTOs.AppUserDtos;
 using YSKProje.ToDo.Entities.Concrete;
-
+using YSKProje.ToDo.Web.BaseControllers;
 
 namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class ProfileController : Controller
+    public class ProfileController : BaseIdentityController
     {
-        private readonly UserManager<AppUser> _userManager;
+        //private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public ProfileController(UserManager<AppUser> userManager, IMapper mapper)
+        public ProfileController(UserManager<AppUser> userManager, IMapper mapper) : base(userManager)
         {
-            _userManager = userManager;
+            //_userManager = userManager;
             _mapper = mapper;
         }
 
@@ -31,7 +31,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         {
             TempData["menu"] = "profile";
 
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await GetSingInUser();
 
             var model = _mapper.Map<ListAppUserDto>(user);
 
@@ -71,10 +71,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    foreach (var err in result.Errors)
-                    {
-                        ModelState.AddModelError("", err.Description);
-                    }
+                    AddError(result.Errors);
                 }
             }
 

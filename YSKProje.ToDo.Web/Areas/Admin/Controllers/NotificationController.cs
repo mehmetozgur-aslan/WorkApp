@@ -9,31 +9,31 @@ using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DTO.DTOs.NotificationDtos;
 using YSKProje.ToDo.Entities.Concrete;
-
+using YSKProje.ToDo.Web.BaseControllers;
 
 namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Admin")]
     [Area("Admin")]
-    public class NotificationController : Controller
+    public class NotificationController : BaseIdentityController
     {
         private readonly INotificationService _notificationService;
-        private readonly UserManager<AppUser> _userManager;
+        //private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public NotificationController(INotificationService notificationService, UserManager<AppUser> userManager, IMapper mapper)
+        public NotificationController(INotificationService notificationService, UserManager<AppUser> userManager, IMapper mapper) : base(userManager)
         {
             _notificationService = notificationService;
-            _userManager = userManager;
+            // _userManager = userManager;
             _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await GetSingInUser();
             var notificationList = _notificationService.GetNotReadByUserId(user.Id);
 
-            List<ListNotificationDto> listNotificationDto = _mapper.Map<List<ListNotificationDto>>(_notificationService.GetNotReadByUserId(user.Id));           
+            List<ListNotificationDto> listNotificationDto = _mapper.Map<List<ListNotificationDto>>(_notificationService.GetNotReadByUserId(user.Id));
 
             return View(listNotificationDto);
         }
