@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
-using YSKProje.ToDo.Web.Areas.Admin.Models;
+
 using Task = YSKProje.ToDo.Entities.Concrete.Task;
 
 namespace YSKProje.ToDo.Web.Areas.Admin.Controllers

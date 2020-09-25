@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DTO.DTOs.AppUserDtos;
 using YSKProje.ToDo.Entities.Concrete;
-using YSKProje.ToDo.Web.Models;
+
 
 namespace YSKProje.ToDo.Web.Controllers
 {

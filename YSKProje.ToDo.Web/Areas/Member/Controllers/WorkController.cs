@@ -10,8 +10,7 @@ using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DTO.DTOs.ReportDtos;
 using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
-using YSKProje.ToDo.Web.Areas.Admin.Models;
-using YSKProje.ToDo.Web.Areas.Member.Models;
+
 
 namespace YSKProje.ToDo.Web.Areas.Member.Controllers
 {
