@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YSKProje.ToDo.Business.Interfaces;
+using YSKProje.ToDo.DTO.DTOs.AppUserDtos;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 
@@ -14,25 +16,19 @@ namespace YSKProje.ToDo.Web.ViewComponents
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly INotificationService _notificationService;
-
-        public Wrapper(UserManager<AppUser> userManager, INotificationService notificationService)
+        private readonly IMapper _mapper;
+        public Wrapper(UserManager<AppUser> userManager, INotificationService notificationService, IMapper mapper)
         {
             _userManager = userManager;
             _notificationService = notificationService;
+            _mapper = mapper;
         }
 
         public IViewComponentResult Invoke()
         {
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
 
-            AppUserListViewModel model = new AppUserListViewModel()
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Surname = user.Surname,
-                Email = user.Email,
-                Picture = user.Picture
-            };
+            var model = _mapper.Map<ListAppUserDto>(user);            
 
             var notificationCount = _notificationService.GetNotReadByUserId(user.Id).Count;
             ViewBag.NotificationCount = notificationCount;
