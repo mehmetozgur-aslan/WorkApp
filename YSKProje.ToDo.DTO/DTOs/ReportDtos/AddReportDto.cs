@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using YSKProje.ToDo.Entities.Concrete;
 
 namespace YSKProje.ToDo.DTO.DTOs.ReportDtos
 {
@@ -16,6 +17,6 @@ namespace YSKProje.ToDo.DTO.DTOs.ReportDtos
         //[Display(Name = "Detay")]
         public string Detail { get; set; }
 
-        //public Task Task { get; set; }
+        public Task Task { get; set; }
     }
 }

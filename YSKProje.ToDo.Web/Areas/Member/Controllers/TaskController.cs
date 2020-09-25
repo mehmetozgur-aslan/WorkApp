@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
+using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 
@@ -17,11 +19,13 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
     {
         private readonly ITaskService _taskService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
 
-        public TaskController(ITaskService taskService, UserManager<AppUser> userManager)
+        public TaskController(ITaskService taskService, UserManager<AppUser> userManager, IMapper mapper)
         {
             _taskService = taskService;
             _userManager = userManager;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index(int activePage = 1)
@@ -30,26 +34,12 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
             int totalPage;
             var tasks = _taskService.GetAllTaskDatasNotCompleted(out totalPage, user.Id, activePage);
 
-            List<TaskListAllViewModel> taskListAllViewModels = new List<TaskListAllViewModel>();
-
             ViewBag.TotalPage = totalPage;
             ViewBag.ActivePage = activePage;
 
-            foreach (var task in tasks)
-            {
-                TaskListAllViewModel taskListAllViewModel = new TaskListAllViewModel();
-                taskListAllViewModel.Id = task.Id;
-                taskListAllViewModel.Name = task.Name;
-                taskListAllViewModel.Description = task.Description;
-                taskListAllViewModel.CreatedDate = task.CreatedDate;
-                taskListAllViewModel.AppUser = task.AppUser;
-                taskListAllViewModel.Reports = task.Reports;
-                taskListAllViewModel.Urgent = task.Urgent;
+            var ListAllTaskDto = _mapper.Map<List<TaskListAllDto>>(tasks);
 
-                taskListAllViewModels.Add(taskListAllViewModel);
-            }
-
-            return View(taskListAllViewModels);
+            return View(ListAllTaskDto);
         }
     }
 }

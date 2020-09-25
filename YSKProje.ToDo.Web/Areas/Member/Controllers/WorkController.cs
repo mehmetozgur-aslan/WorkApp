@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
+using YSKProje.ToDo.DTO.DTOs.ReportDtos;
+using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
 using YSKProje.ToDo.Web.Areas.Admin.Models;
 using YSKProje.ToDo.Web.Areas.Member.Models;
@@ -21,14 +24,16 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IReportService _reportService;
         private readonly INotificationService _notificationService;
+        private readonly IMapper _mapper;
 
-        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IReportService reportService, INotificationService notificationService)
+        public WorkController(IAppUserService appUserService, ITaskService taskService, UserManager<AppUser> userManager, IReportService reportService, INotificationService notificationService, IMapper mapper)
         {
             _appUserService = appUserService;
             _taskService = taskService;
             _userManager = userManager;
             _reportService = reportService;
             _notificationService = notificationService;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
@@ -39,38 +44,40 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
 
             var tasks = _taskService.GetAllTaskDatas(x => x.AppUserId == user.Id && !x.State);
 
-            List<TaskListAllViewModel> taskListModel = new List<TaskListAllViewModel>();
+            var taskListDto = _mapper.Map<List<TaskListAllDto>>(tasks);
 
-            foreach (var task in tasks)
-            {
-                TaskListAllViewModel model = new TaskListAllViewModel();
-                model.Id = task.Id;
-                model.Name = task.Name;
-                model.CreatedDate = task.CreatedDate;
-                model.Description = task.Description;
-                model.AppUser = task.AppUser;
-                model.Reports = task.Reports;
-                model.Urgent = task.Urgent;
+            //List<TaskListAllViewModel> taskListModel = new List<TaskListAllViewModel>();
 
-                taskListModel.Add(model);
-            }
+            //foreach (var task in tasks)
+            //{
+            //    TaskListAllViewModel model = new TaskListAllViewModel();
+            //    model.Id = task.Id;
+            //    model.Name = task.Name;
+            //    model.CreatedDate = task.CreatedDate;
+            //    model.Description = task.Description;
+            //    model.AppUser = task.AppUser;
+            //    model.Reports = task.Reports;
+            //    model.Urgent = task.Urgent;
 
-            return View(taskListModel);
+            //    taskListModel.Add(model);
+            //}
+
+            return View(taskListDto);
         }
 
         public IActionResult Add(int taskId)
         {
             var task = _taskService.GetTaskWithUrgent(taskId);
 
-            ReportAddViewModel reportAddViewModel = new ReportAddViewModel();
-            reportAddViewModel.TaskId = taskId;
-            reportAddViewModel.Task = task;
+            AddReportDto addReportDto = new AddReportDto();
+            addReportDto.TaskId = taskId;
+            addReportDto.Task = task;
 
-            return View(reportAddViewModel);
+            return View(addReportDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(ReportAddViewModel model)
+        public async Task<IActionResult> Add(AddReportDto model)
         {
             if (ModelState.IsValid)
             {
@@ -104,18 +111,20 @@ namespace YSKProje.ToDo.Web.Areas.Member.Controllers
         public IActionResult Update(int id)
         {
             var report = _reportService.GetReportWithTaskById(id);
-            ReportUpdateViewModel reportUpdateViewModel = new ReportUpdateViewModel();
-            reportUpdateViewModel.ReportId = report.Id;
-            reportUpdateViewModel.Definition = report.Description;
-            reportUpdateViewModel.Detail = report.Detail;
-            reportUpdateViewModel.Task = report.Task;
-            reportUpdateViewModel.TaskId = report.TaskId;
+            UpdateReportDto updateReportDto = new UpdateReportDto();
+            updateReportDto.ReportId = report.Id;
+            updateReportDto.Definition = report.Description;
+            updateReportDto.Detail = report.Detail;
+            updateReportDto.Task = report.Task;
+            updateReportDto.TaskId = report.TaskId;
 
-            return View(reportUpdateViewModel);
+            
+
+            return View(updateReportDto);
         }
 
         [HttpPost]
-        public IActionResult Update(ReportUpdateViewModel model)
+        public IActionResult Update(UpdateReportDto model)
         {
             if (ModelState.IsValid)
             {

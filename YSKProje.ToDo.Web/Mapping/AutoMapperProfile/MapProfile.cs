@@ -73,6 +73,9 @@ namespace YSKProje.ToDo.Web.Mapping.AutoMapperProfile
             CreateMap<UpdateReportDto, Report>();
             CreateMap<Report, UpdateReportDto>();
 
+            CreateMap<Entities.Concrete.Task, AddReportDto>();
+            CreateMap<Report, UpdateReportDto>();
+
             #endregion
 
           
