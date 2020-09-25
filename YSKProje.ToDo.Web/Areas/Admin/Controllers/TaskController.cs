@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.Entities.Concrete;
-
+using YSKProje.ToDo.Web.StringInfo;
 using Task = YSKProje.ToDo.Entities.Concrete.Task;
 
 namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    [Area("Admin")]
+    [Authorize(Roles = RoleInfo.Admin)]
+    [Area(AreaInfo.Admin)]
     public class TaskController : Controller
     {
         private readonly ITaskService _taskService;
