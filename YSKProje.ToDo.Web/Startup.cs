@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using YSKProje.ToDo.Business.Concrete;
+using YSKProje.ToDo.Business.DIContainer;
 using YSKProje.ToDo.Business.Interfaces;
 using YSKProje.ToDo.Business.ValidationRules.FluentValidation;
 using YSKProje.ToDo.DataAccess.Concrete.EntityFrameworkCore.Contexts;
@@ -22,6 +23,7 @@ using YSKProje.ToDo.DTO.DTOs.ReportDtos;
 using YSKProje.ToDo.DTO.DTOs.TaskDtos;
 using YSKProje.ToDo.DTO.DTOs.UrgentDtos;
 using YSKProje.ToDo.Entities.Concrete;
+using YSKProje.ToDo.Web.CustomCollectionExtensions;
 
 namespace YSKProje.ToDo.Web
 {
@@ -31,52 +33,14 @@ namespace YSKProje.ToDo.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ITaskService, TaskManager>();
-            services.AddScoped<IUrgentService, UrgentManager>();
-            services.AddScoped<IReportService, ReportManager>();
-            services.AddScoped<IAppUserService, AppUserManager>();
-            services.AddScoped<IFileService, FileManager>();
-            services.AddScoped<INotificationService, NotificationManager>();
-
-            services.AddScoped<ITaskDal, EfTaskRepository>();
-            services.AddScoped<IReportDal, EfReportRepository>();
-            services.AddScoped<IUrgentDal, EfUrgentRepository>();
-            services.AddScoped<IUserDal, EfUserRepository>();
-            services.AddScoped<INotificationDal, EfNotificationRepository>();
-
-
+            services.AddContainerWithDependencies();
 
             services.AddDbContext<TodoContext>();
-            services.AddIdentity<AppUser, AppRole>(opt =>
-            {
-                opt.Password.RequireDigit = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequiredLength = 1;
-            }).AddEntityFrameworkStores<TodoContext>();
-
-            services.ConfigureApplicationCookie(opt =>
-            {
-                opt.Cookie.Name = "IsTakipCookie";
-                opt.Cookie.SameSite = SameSiteMode.Strict;
-                opt.Cookie.HttpOnly = true;
-                opt.ExpireTimeSpan = TimeSpan.FromDays(20);
-                opt.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                opt.LoginPath = "/Home/Index";
-            });
+            services.AddCustomIdentity();
 
             services.AddAutoMapper(typeof(Startup)); //Dependency injection ile alabilmek için
 
-            //Bir DTO için validasyon iþlemi varsa bu validasyonu belirtilen validator classýyla yap
-            services.AddTransient<IValidator<AddUrgentDto>, UrgentAddValidator>();
-            services.AddTransient<IValidator<UpdateUrgentDto>, UrgentUpdateValidator>();
-            services.AddTransient<IValidator<AddAppUserDto>, AppUserAddValidator>();
-            services.AddTransient<IValidator<SignInAppUserDto>, AppUserSignInValidator>();
-            services.AddTransient<IValidator<AddTaskDto>, TaskAddValidator>();
-            services.AddTransient<IValidator<UpdateTaskDto>, TaskUpdateValidator>();
-            services.AddTransient<IValidator<AddReportDto>, ReportAddValidator>();
-            services.AddTransient<IValidator<UpdateReportDto>, ReportUpdateValidator>();
+            services.AddCustomValidator();
 
             services.AddControllersWithViews().AddFluentValidation();
         }
