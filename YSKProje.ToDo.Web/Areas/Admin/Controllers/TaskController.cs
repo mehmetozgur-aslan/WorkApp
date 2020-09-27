@@ -61,6 +61,7 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
+            ViewBag.UrgentList = new SelectList(_urgentService.GetAll(), "Id", "Definition");
 
             return View(model);
         }

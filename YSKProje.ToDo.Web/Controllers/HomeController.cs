@@ -16,11 +16,13 @@ namespace YSKProje.ToDo.Web.Controllers
     {
         //private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly ICustomLogger _customLogger;
 
-        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager)
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ICustomLogger customLogger) : base(userManager)
         {
             //_userManager = userManager;
             _signInManager = signInManager;
+            _customLogger = customLogger;
         }
 
         public IActionResult Index()
@@ -122,6 +124,8 @@ namespace YSKProje.ToDo.Web.Controllers
         public IActionResult Error()
         {
             var exceptionHandler = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            _customLogger.LogError($"Hatanın oluştuğu yer : {exceptionHandler.Path}\nHata Mesajı : {exceptionHandler.Error.Message}\nStack Trace : {exceptionHandler.Error.StackTrace}");
 
             ViewBag.Path = exceptionHandler.Path;
             ViewBag.Message = exceptionHandler.Error.Message;
