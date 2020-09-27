@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YSKProje.ToDo.Business.Interfaces;
@@ -108,13 +109,22 @@ namespace YSKProje.ToDo.Web.Controllers
 
         public IActionResult StatusCode(int? code)
         {
-            if (code==404)
+            if (code == 404)
             {
                 ViewBag.Code = code;
                 ViewBag.Message = "Sayfa bulunamadı.";
 
             }
 
+            return View();
+        }
+
+        public IActionResult Error()
+        {
+            var exceptionHandler = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+
+            ViewBag.Path = exceptionHandler.Path;
+            ViewBag.Message = exceptionHandler.Error.Message;
 
             return View();
         }
