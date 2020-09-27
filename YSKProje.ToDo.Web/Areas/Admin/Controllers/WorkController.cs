@@ -65,16 +65,16 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult AssignToPerson(AssignPersonelToTaskListDto model)
+        public IActionResult AssignToPerson(AssignPersonelToTaskDto model)
         {
-            var task = _taskService.GetById(model.Task.Id);
-            task.AppUserId = model.AppUser.Id;
+            var task = _taskService.GetById(model.TaskId);
+            task.AppUserId = model.AppUserId;
 
             _taskService.Update(task);
 
             _notificationService.Save(new Notification
             {
-                AppUserId = model.AppUser.Id,
+                AppUserId = model.AppUserId,
                 Description = $"{task.Name} isimli iş için görevlendirildiniz."
             });
 

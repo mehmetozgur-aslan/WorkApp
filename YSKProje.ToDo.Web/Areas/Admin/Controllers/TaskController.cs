@@ -82,14 +82,15 @@ namespace YSKProje.ToDo.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _taskService.Update(new Entities.Concrete.Task
-                {
-                    Id = model.Id,
-                    Name = model.Name,
-                    Description = model.Description,
-                    State = false,
-                    UrgentId = model.UrgentId
-                });
+
+                var task = _taskService.GetById(model.Id);
+
+                task.Name = model.Name;
+                task.Description = model.Description;
+                task.State = false;
+                task.UrgentId = model.UrgentId;
+
+                _taskService.Update(task);
 
                 return RedirectToAction("Index");
             }

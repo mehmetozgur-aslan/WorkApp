@@ -43,7 +43,7 @@
                         <tr>
                             <td>@report.Description</td>
                             <td>@report.Detail</td>
-                            <td><a asp-action="Edit" asp-route-id="@report.Id" class="btn btn-warning btn-sm"><i class="fas fa-edit mr-2"></i> Düzenle</a></td>
+                            <td><a asp-action="Update" asp-route-id="@report.Id" class="btn btn-warning btn-sm"><i class="fas fa-edit mr-2"></i> Düzenle</a></td>
                         </tr>
                     }
                 </table>
@@ -55,11 +55,6 @@
 
 }
 
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-</button>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
