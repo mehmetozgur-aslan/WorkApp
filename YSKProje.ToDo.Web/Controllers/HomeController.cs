@@ -16,7 +16,7 @@ namespace YSKProje.ToDo.Web.Controllers
         //private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager):base(userManager)
+        public HomeController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager)
         {
             //_userManager = userManager;
             _signInManager = signInManager;
@@ -104,5 +104,20 @@ namespace YSKProje.ToDo.Web.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index");
         }
+
+
+        public IActionResult StatusCode(int? code)
+        {
+            if (code==404)
+            {
+                ViewBag.Code = code;
+                ViewBag.Message = "Sayfa bulunamadı.";
+
+            }
+
+
+            return View();
+        }
+
     }
 }
